@@ -8,7 +8,7 @@ public class TestController {
 
     @GetMapping("/")
     public String onGet() {
-        return "Hello World";
+        return "Hello Openshift";
     }
 
 }

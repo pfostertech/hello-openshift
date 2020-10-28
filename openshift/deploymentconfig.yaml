@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: deployment-config-template
+objects:
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      name: ${APP_NAME}
+      labels:
+        app: ${APP_NAME}
+    spec:
+      replicas: 3
+      selector:
+        name: ${APP_NAME}
+      strategy:
+        type: Rolling
+        rollingParams:
+      template:
+        metadata:
+          labels:
+            name: ${APP_NAME}
+        spec:
+          containers:
+            - name: spring-app
+              imagePullPolicy: Always
+              image: ${IMAGE_NAME}
+      triggers:
+        - type: ConfigChange
+parameters:
+  - name: APP_NAME
+    displayName: App Name
+    required: true
+  - name: IMAGE_NAME
+    displayName: Docker image name
+    required: true
