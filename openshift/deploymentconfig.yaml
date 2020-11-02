@@ -26,6 +26,25 @@ objects:
             - name: spring-app
               imagePullPolicy: Always
               image: ${IMAGE_NAME}
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1250Mi
+                requests:
+                  cpu: 100m
+                  memory: 250Mi
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                initialDelaySeconds: 15
+                timeoutSeconds: 1
+              readinessProbe:
+                httpGet:
+                  path: /actuator/health/readiness
+                  port: 8080
+                initialDelaySeconds: 15
+                timeoutSeconds: 1
       triggers:
         - type: ConfigChange
 parameters:

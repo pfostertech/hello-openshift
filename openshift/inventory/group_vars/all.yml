@@ -36,6 +36,12 @@ openshift_cluster_content:
 #        params_from_vars: "{{ project_params }}"
 #        tags:
 #          - deploy
+      - name: ImageStream
+        namespace: "{{ project_params.NAMESPACE }}"
+        template: "{{ playbook_dir }}/imagestream.yaml"
+        params_from_vars: "{{ project_params | combine(deployment_config_params) }}"
+        tags:
+          - deploy
       - name: Deployment Config
         template: "{{ playbook_dir }}/deploymentConfig.yaml"
         params_from_vars: "{{ project_params | combine(deployment_config_params) }}"
