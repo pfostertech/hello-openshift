@@ -7,12 +7,12 @@ objects:
     kind: ImageStream
     metadata:
       name: ${APP_NAME}
-    spec:
-      tags:
-        - name: latest
-          from:
-            kind: DockerImage
-            name: "philipfoster/hello-openshift:latest"
+#    spec:
+#      tags:
+#        - name: latest
+#          from:
+#            kind: DockerImage
+#            name: "philipfoster/hello-openshift:latest"
 
 parameters:
   - name: APP_NAME

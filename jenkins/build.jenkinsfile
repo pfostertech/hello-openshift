@@ -1,0 +1,55 @@
+pipeline {
+
+  agent {
+    node {
+      label 'maven'
+    }
+  }
+
+  options {
+    timeout(time: 5, unit: 'MINUTES')
+  }
+
+  stages {
+    stage("Build JAR") {
+      steps {
+        sh 'mvn clean install -DskipTests'
+      }
+    }
+
+    stage("Run JUnit tests") {
+      steps {
+        sh 'mvn test'
+      }
+    }
+
+//    stage("Publish JAR to maven repository") {
+//      steps {
+//        echo "... publishing jar ..."
+//      }
+//    }
+
+    stage("Build docker image") {
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.withProject() {
+              def bc = openshift.selector( 'bc' )
+              def buildSelector = bc.startBuild()
+
+              buildSelector.logs( '-f' )
+            }
+          }
+        }
+      }
+    }
+
+    stage("Run vulnerability scan") {
+      steps {
+        echo "... running vulnerability scan ..."
+      }
+    }
+  }
+
+
+}

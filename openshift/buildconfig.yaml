@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: bc-template
+objects:
+  - kind: "BuildConfig"
+    apiVersion: "v1"
+    metadata:
+      name: "hello-openshift-build"
+    spec:
+      strategy:
+        dockerStrategy:
+          type: Docker
+          dockerfilePath: Dockerfile
+          noCache: true
+      source:
+        binary:
+      output:
+        to:
+          kind: "ImageStreamTag"
+          namespace: ${NAMESPACE}
+          name: ${APP_NAME}:latest
+parameters:
+  - name: NAMESPACE
+    description: The namespace to deploy to
+    required: true
+  - name: APP_NAME
+    description: The application name
+    required: true
